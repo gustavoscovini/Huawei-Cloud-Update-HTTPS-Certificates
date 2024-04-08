@@ -1,0 +1,5 @@
+.idea
+__pycache__
+cert/*.pem
+domains.txt
+my_config.py
