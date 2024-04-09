@@ -9,28 +9,32 @@ cert_name = ""
 private_key_name = ""
 
 if __name__ == "__main__":
-    certificate_file = 'cert/' + cert_name
-    privkey_file = 'cert/' + private_key_name
+    certificate_file = 'cert/' + cert_name # Make sure to put the name with the extension ".pem"
+    privkey_file = 'cert/' + private_key_name # Make sure to put the name with the extension ".pem"
     
+    # Read the certificate file and storage it in a variable
     with open(certificate_file, 'r', encoding='utf-8') as file:
         certificate_file_read = file.read()
-
+    # Read the private key file and storage it in a variable
     with open(privkey_file, 'r', encoding='utf-8') as file:
         privkey_file_read = file.read()
 
+    # Authenticate API with your AK/SK
     credentials = BasicCredentials(config['ak'], config['sk'])
 
     client = LiveClient.new_builder().with_credentials(credentials).with_region(
         LiveRegion.value_of("ap-southeast-3")).build()
 
+    # Open the domains.txt file and get all domain to be updated
     with open('domains.txt') as f:
         domains = f.readlines()
     
+    
+    # Make the update for all domains in a loop
     for domain in domains:
         try:        
             request = UpdateDomainHttpsCertRequest()
             request.domain = domain.strip()
-            print(domain)
             request.body = DomainHttpsCertInfo(
                 certificate=certificate_file_read,
                 certificate_key=privkey_file_read,
