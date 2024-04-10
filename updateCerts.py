@@ -29,13 +29,15 @@ if __name__ == "__main__":
     with open('domains.txt') as file:
         domains = file.readlines()
 
+    domains = [d.strip() for d in domains]
+
     n_domains = len(domains)
     for i_domain, domain in enumerate(domains):
         print(f'[{i_domain+1}/{n_domains}] {domain} : ', end='')
 
         try:
             request = UpdateDomainHttpsCertRequest()
-            request.domain = domain.strip()
+            request.domain = domain
             request.body = DomainHttpsCertInfo(
                 certificate=certificate_file_read,
                 certificate_key=privkey_file_read,
